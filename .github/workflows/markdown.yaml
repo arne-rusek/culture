@@ -1,0 +1,31 @@
+name: Markdown Linter
+on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    name: Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Setup Linter
+        run: "npm install --global remark-cli remark-validate-links remark-lint-no-dead-urls"
+      - name: Lint
+        run: "remark -o -f -u validate-links -u lint-no-dead-urls ."
+
+# TODO:
+#   - linter: install remark-preset-lint-recommended and run it
+#             or use some preset from links below
+#             NOTE: you will have to fix a lot of lists (or tune the rules)
+# LINKS:
+#   - markdown lint presets
+#     - https://github.com/topics/remark-preset
+#     - https://www.npmjs.com/search?q=remark-preset
+#   - more plugins: https://github.com/remarkjs/remark/blob/HEAD/doc/plugins.md#list-of-plugins
